@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DiStories</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="masukan_nama">Enter your name</string>
+    <string name="masukan_password">Enter your password</string>
+    <string name="txtemail">Email</string>
+    <string name="masukan_email">Enter your email</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="register">Sign up</string>
+    <string name="nama">Name</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="stories_terbaru">New Stories</string>
+    <string name="kamera" translatable="false">Camera</string>
+    <string name="galeri">Gallery</string>
+    <string name="masukan_deskripsi">Enter description</string>
+    <string name="not_implement">Sorry, Not Implement!, You can Change language in Settings</string>
+    <string name="uploadtime" translatable="false">Uploaded at %1s</string>
+    <string name="empty_password">Email or Password cannot be Empty</string>
+    <string name="not_valid">Email or Password not valid!</string>
+    <string name="logout_success">Logout Success!</string>
+    <string name="account_created">Account Created Successfully!</string>
+    <string name="already_exist">Email Already Used!</string>
+    <string name="field_empty">Name, Email, or Password cannot be Empty</string>
+    <string name="story_uploaded">Story uploaded successfully!</string>
+    <string name="failed_story">Story failed to upload!</string>
+    <string name="empty_img">Please enter a picture first!</string>
+    <string name="not_granted">Didn\'t get permission.</string>
+    <string name="enter_valid_email">Enter email correctly!</string>
+    <string name="not_empty">Cannot be empty!</string>
+    <string name="min_caracter">Must be at least 6 characters long!</string>
+    <string name="empty_desc">Description cannot be empty!</string>
+    <string name="notimplement">Not yet Implemented</string>
+</resources>

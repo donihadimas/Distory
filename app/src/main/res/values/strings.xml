@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">DiStories</string>
+    <string name="welcome_back">Selamat Datang!</string>
+    <string name="masukan_nama">Masukan Nama</string>
+    <string name="masukan_password">Masukan Password</string>
+    <string name="txtemail">Email</string>
+    <string name="masukan_email">Masukan Email</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Masuk</string>
+    <string name="have_account">Tidak Punya Akun?</string>
+    <string name="sign_up">Daftar</string>
+    <string name="register">Daftar</string>
+    <string name="nama">Nama</string>
+    <string name="create_an_account">Buat Akun</string>
+    <string name="uploadtime">Diupload pada %1s </string>
+    <string name="stories_terbaru">Stories Terbaru</string>
+    <string name="stories_lainnya" translatable="false">Stories Lainnya</string>
+    <string name="kamera">Kamera</string>
+    <string name="galeri">Galeri</string>
+    <string name="upload" translatable="false">Upload</string>
+    <string name="add_story" translatable="false">Add Story</string>
+    <string name="title_activity_bottom" translatable="false">Bottom</string>
+    <string name="title_home" translatable="false">Home</string>
+    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_notifications" translatable="false">Notifications</string>
+    <string name="menu_home" translatable="false">Home</string>
+    <string name="menu_add" translatable="false">Add Story</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="masukan_deskripsi">Masukan Deskripsi</string>
+    <string name="foto_story" translatable="false">Foto Story</string>
+    <string name="bahasa" translatable="false">Bahasa</string>
+    <string name="empty_password">Email atau Password tidak boleh Kosong</string>
+    <string name="not_valid">Email atau Password anda tidak valid!</string>
+    <string name="logout_success">Logout Berhasil!</string>
+    <string name="account_created">Akun Berhasil dibuat!</string>
+    <string name="already_exist">Email Sudah Digunakan!</string>
+    <string name="field_empty">Nama, Email, atau Password tidak boleh Kosong</string>
+    <string name="story_uploaded">Story berhasil di Upload!</string>
+    <string name="failed_story">Story gagal di Upload!</string>
+    <string name="empty_img">Silakan masukkan gambar terlebih dahulu!</string>
+    <string name="not_granted">Tidak mendapatkan permission.</string>
+    <string name="enter_valid_email">Masukan email dengan benar!</string>
+    <string name="not_empty">Tidak boleh kosong!</string>
+    <string name="min_caracter">Setidaknya harus lebih dari 6 karakter!</string>
+    <string name="not_implement">Maaf, Belum diimplementasi, anda bisa merubah di settings</string>
+    <string name="empty_desc">Deskripsi tidak boleh kosong!</string>
+    <string name="title_activity_map_story" translatable="false">MapStoryActivity</string>
+    <string name="map_story" translatable="false">Map Story</string>
+    <string name="normal_type" translatable="false">Normal</string>
+    <string name="satellite_type" translatable="false">Satellite</string>
+    <string name="terrain_type" translatable="false">Terrain</string>
+    <string name="hybrid_type" translatable="false">Hybrid</string>
+    <string name="story_map_text" translatable="false">Story Map</string>
+    <string name="notimplement">Masih Belum Di implementasikan</string>
+</resources>

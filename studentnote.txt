@@ -1,0 +1,5 @@
+Animasi Transition dan property animation tarletak di
+Halaman Splashscreen
+Halaman Login
+Toggle bahasa sementara masih belum di implementasikan
+Tetapi bahasa bisa di ganti melalui ganti bahasa di settings
