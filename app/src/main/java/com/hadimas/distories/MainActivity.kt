@@ -8,11 +8,14 @@ import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hadimas.distories.adapter.ListStoryAdapter
+import com.hadimas.distories.adapter.LoadingStateAdapter
+import com.hadimas.distories.adapter.StoryAdapter
 import com.hadimas.distories.databinding.ActivityMainBinding
 import com.hadimas.distories.preferences.DataLoginModel
 import com.hadimas.distories.preferences.LoginPreference
@@ -20,6 +23,7 @@ import com.hadimas.distories.response.ListStoryItem
 import com.hadimas.distories.viewmodel.LoginViewModel
 import com.hadimas.distories.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.joery.animatedbottombar.AnimatedBottomBar
@@ -29,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mLoginPref: LoginPreference
     private lateinit var dataLoginModel: DataLoginModel
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapterList: ListStoryAdapter
+    private lateinit var adapterList: StoryAdapter
     private lateinit var bottomNav : AnimatedBottomBar
     private lateinit var btnLang: ToggleButton
 
@@ -78,37 +82,45 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        lifecycleScope.launch(Dispatchers.Default){
-            adapterList = ListStoryAdapter()
-            withContext(Dispatchers.Main){
-                binding.rvListStories.apply {
-                    layoutManager = LinearLayoutManager(this@MainActivity)
-                    setHasFixedSize(true)
-                    adapter = adapterList
-                }
+        setRView()
+
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(mLoginPref)
+        )[MainViewModel::class.java]
+        binding.pgBarMain.visibility = View.VISIBLE
+        lifecycleScope.launchWhenCreated {
+//            binding.rvListStories.adapter = adapterList.withLoadStateFooter(
+//                footer = LoadingStateAdapter {
+//                    adapterList.retry()
+//                }
+//            )
+            viewModel.getListStory().collectLatest {
+                binding.pgBarMain.visibility = View.GONE
+                adapterList.submitData(it)
             }
         }
-
         btnLang.setOnClickListener{
             if (btnLang.isChecked){
                 Toast.makeText(this, getString(R.string.not_implement), Toast.LENGTH_LONG).show()
             }
         }
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        binding.pgBarMain.visibility = View.VISIBLE
-        lifecycleScope.launch(Dispatchers.Default) {
-            viewModel.setListStory(dataLoginModel.token.toString())
-            withContext(Dispatchers.Main) {
-                viewModel.getListStory().observe(this@MainActivity) {
-                    if (it.isNotEmpty()) {
-                        adapterList.setStory(it)
-                        binding.pgBarMain.visibility = View.GONE
-                    }
-                }
-            }
-        }
 
-        adapterList.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
+//        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+//        binding.pgBarMain.visibility = View.VISIBLE
+//        lifecycleScope.launch(Dispatchers.Default) {
+//            viewModel.setListStory(dataLoginModel.token.toString())
+//            withContext(Dispatchers.Main) {
+//                viewModel.getListStory().observe(this@MainActivity) {
+//                    if (it.isNotEmpty()) {
+//                        adapterList.setStory(it)
+//                        binding.pgBarMain.visibility = View.GONE
+//                    }
+//                }
+//            }
+//        }
+//
+        adapterList.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
                 val intToDetail = Intent(this@MainActivity,  DetailStoryActivity::class.java)
                 intToDetail.putExtra(DetailStoryActivity.EXTRA_URL, data.photoUrl)
@@ -121,6 +133,14 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         })
+    }
+
+    private fun setRView(){
+        binding.rvListStories.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapterList = StoryAdapter()
+            adapter = adapterList
+        }
     }
 
     companion object{

@@ -35,4 +35,5 @@
     <string name="min_caracter">Must be at least 6 characters long!</string>
     <string name="empty_desc">Description cannot be empty!</string>
     <string name="notimplement">Not yet Implemented</string>
+    <string name="retry">Try Again</string>
 </resources>

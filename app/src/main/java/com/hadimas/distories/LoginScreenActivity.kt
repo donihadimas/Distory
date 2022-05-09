@@ -39,7 +39,7 @@ class LoginScreenActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(loginPref,this)
+            ViewModelFactory(loginPref)
         )[LoginViewModel::class.java]
 
         loginAnim()

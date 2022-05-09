@@ -45,6 +45,6 @@ interface ApiService {
     suspend fun getStoryWithPaging(
         @Header("Authorization") token: String,
         @Query("page") page:Int
-    ): List<ListStoryItem>
+    ): StoryResponse
 
 }

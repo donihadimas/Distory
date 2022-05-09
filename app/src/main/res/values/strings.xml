@@ -53,4 +53,5 @@
     <string name="hybrid_type" translatable="false">Hybrid</string>
     <string name="story_map_text" translatable="false">Story Map</string>
     <string name="notimplement">Masih Belum Di implementasikan</string>
+    <string name="retry">Coba Lagi</string>
 </resources>
