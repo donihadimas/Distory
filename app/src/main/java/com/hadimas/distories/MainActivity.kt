@@ -8,24 +8,18 @@ import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hadimas.distories.adapter.ListStoryAdapter
 import com.hadimas.distories.adapter.LoadingStateAdapter
 import com.hadimas.distories.adapter.StoryAdapter
 import com.hadimas.distories.databinding.ActivityMainBinding
 import com.hadimas.distories.preferences.DataLoginModel
 import com.hadimas.distories.preferences.LoginPreference
 import com.hadimas.distories.response.ListStoryItem
-import com.hadimas.distories.viewmodel.LoginViewModel
 import com.hadimas.distories.viewmodel.MainViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity() {
@@ -82,44 +76,35 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        binding.pgBarMain.visibility = View.VISIBLE
         setRView()
 
         viewModel = ViewModelProvider(
             this,
             ViewModelFactory(mLoginPref)
         )[MainViewModel::class.java]
-        binding.pgBarMain.visibility = View.VISIBLE
+
         lifecycleScope.launchWhenCreated {
-//            binding.rvListStories.adapter = adapterList.withLoadStateFooter(
-//                footer = LoadingStateAdapter {
-//                    adapterList.retry()
-//                }
-//            )
+            binding.rvListStories.adapter = adapterList.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    adapterList.retry()
+                }
+            )
             viewModel.getListStory().collectLatest {
-                binding.pgBarMain.visibility = View.GONE
                 adapterList.submitData(it)
             }
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.pgBarMain.visibility = View.GONE
+        }, delay)
+
         btnLang.setOnClickListener{
             if (btnLang.isChecked){
                 Toast.makeText(this, getString(R.string.not_implement), Toast.LENGTH_LONG).show()
             }
         }
 
-//        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-//        binding.pgBarMain.visibility = View.VISIBLE
-//        lifecycleScope.launch(Dispatchers.Default) {
-//            viewModel.setListStory(dataLoginModel.token.toString())
-//            withContext(Dispatchers.Main) {
-//                viewModel.getListStory().observe(this@MainActivity) {
-//                    if (it.isNotEmpty()) {
-//                        adapterList.setStory(it)
-//                        binding.pgBarMain.visibility = View.GONE
-//                    }
-//                }
-//            }
-//        }
-//
         adapterList.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ListStoryItem) {
                 val intToDetail = Intent(this@MainActivity,  DetailStoryActivity::class.java)
@@ -144,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
-        const val delay = 500L
+        const val delay = 1000L
     }
 
 }

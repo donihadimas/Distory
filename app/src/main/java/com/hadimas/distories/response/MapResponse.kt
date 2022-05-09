@@ -1,6 +1,5 @@
 package com.hadimas.distories.response
 
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 data class MapResponse(

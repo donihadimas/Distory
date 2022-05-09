@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -48,9 +50,7 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
     private fun btnAction() {
-
         btnLogin.setOnClickListener {
-            binding.pgBarLogin.visibility = View.VISIBLE
             if (binding.edtEmail.text.toString().isNotEmpty() && binding.edtPass.text.toString()
                     .isNotEmpty()
             ) {
@@ -76,14 +76,15 @@ class LoginScreenActivity : AppCompatActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 binding.apply {
-                                    pgBarLogin.visibility = View.GONE
                                     edtEmail.requestFocus()
                                 }
                             }
                         }
                     }
                 }
-
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.pgBarLogin.visibility = View.GONE
+                }, delay)
 
             } else {
                 Toast.makeText(this, getString(R.string.empty_password), Toast.LENGTH_LONG)
@@ -116,5 +117,8 @@ class LoginScreenActivity : AppCompatActivity() {
             playSequentially(edtmail, edtpass, btnlogin, btnsignup)
             start()
         }
+    }
+    companion object{
+        const val delay = 1000L
     }
 }

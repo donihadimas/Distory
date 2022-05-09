@@ -22,12 +22,6 @@ interface ApiService {
         @Field("password") password: String
     ): Call<RegisterResponse>
 
-    @GET("stories")
-    fun getStory(
-        @Header("Authorization") token: String
-    ): Call<StoryResponse>
-
-
     @Multipart
     @POST("stories")
     fun sendImage(

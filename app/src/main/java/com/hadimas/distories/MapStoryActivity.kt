@@ -1,14 +1,21 @@
 package com.hadimas.distories
 
+import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,6 +41,15 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnIn
     private lateinit var dataLoginModel: DataLoginModel
     private lateinit var viewModel: MapStoryViewModel
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapStoryBinding.inflate(layoutInflater)
@@ -42,14 +58,14 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnIn
         mLoginPref = LoginPreference(this)
         dataLoginModel = mLoginPref.getDataLogin()
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        mLoginPref = LoginPreference(this)
         bottomNav = findViewById(R.id.bottom_bar)
+
         navigateNav()
+
         supportActionBar?.title = getString(R.string.story_map_text)
 
         viewModel = ViewModelProvider(this)[MapStoryViewModel::class.java]
@@ -57,10 +73,8 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnIn
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        mMap.uiSettings.isIndoorLevelPickerEnabled = true
-        mMap.uiSettings.isCompassEnabled = true
-        mMap.uiSettings.isMapToolbarEnabled = true
+
+        setUiMap(googleMap)
 
         lifecycleScope.launch(Dispatchers.Default) {
             viewModel.setMapStory(dataLoginModel.token.toString())
@@ -68,7 +82,10 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnIn
                 showStoryMap()
             }
         }
+
         mMap.setOnInfoWindowClickListener(this)
+        getMyLocation()
+        setStyleMap()
     }
 
     private fun navigateNav() {
@@ -170,5 +187,37 @@ class MapStoryActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnIn
 
     override fun onInfoWindowClick(marker: Marker) {
         Toast.makeText(this, getString(R.string.notimplement), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            mMap.isMyLocationEnabled = true
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun setUiMap(googleMap: GoogleMap){
+        mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.uiSettings.isIndoorLevelPickerEnabled = true
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMapToolbarEnabled = true
+    }
+
+    private fun setStyleMap() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
     }
 }
